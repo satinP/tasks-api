@@ -10,21 +10,26 @@ module.exports = app => {
  }
 
  const save = (req, res) => {
-   getHash(req.body.password, hash => {
-     const hashedPassword = hash;
 
-     app.db('users')
-       .insert({name: req.body.name,
-                email: req.body.email,
-                password: hashedPassword
-              })
-      .then(() => {
-        return res.status(204).send();
-      })
-      .catch((error) => {
-        return res.status(500).json(error);
-      });
-   });
+  if (!req.body.username || !req.body.email || !req.body.password) {
+    return res.status(400).send('Faltam campos');
+  }
+
+  getHash(req.body.password, hash => {
+    const hashedPassword = hash;
+
+    app.db('users')
+      .insert({name: req.body.name,
+              email: req.body.email,
+              password: hashedPassword
+            })
+    .then(() => {
+      return res.status(204).send('Salvo!');
+    })
+    .catch((error) => {
+      return res.status(500).json(error);
+    });
+  });
  }
   return { save }
-} 
+}
