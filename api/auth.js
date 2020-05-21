@@ -30,5 +30,6 @@ module.exports = app => {
       res.status(400).send('Não foi possível fazer o login');
     }
   }
+  
   return {signin};
 }
