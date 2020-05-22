@@ -1,11 +1,17 @@
 module.exports = app => {
-  app.post('/user/save', app.api.user.save);
+  app.post('/signup', app.api.user.save);
 
-  app.post('/auth/signin', app.api.auth.signin);
+  app.post('/signin', app.api.auth.signin);
 
-  app.get('/task/save', app.api.task.save);
-  app.get('/task/get-tasks', app.api.task.getTasks);
-  app.get('/task/remove', app.api.task.remove);
-  app.get('/task/toggle-done-task', app.api.task.toggleDoneTask);
+  app.route('/tasks')
+    .all(app.config.passport.authenticate())
+    .get(app.api.task.getTasks)
+    .post(app.api.task.save)
+  app.route('/tasks/:id')
+    .all(app.config.passport.authenticate())
+    .delete(app.api.task.remove)
+  app.route('/tasks/toggle/:id')
+    .all(app.config.passport.authenticate())
+    .put(app.api.task.toggleDoneTask)
 
 }
