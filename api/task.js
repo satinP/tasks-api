@@ -44,5 +44,31 @@ module.exports = app => {
       })
   }
 
-  return { getTasks, save, remove }
+  const updateTaskDoneDate = (req, res, doneDate) => {
+    app.db('tasks')
+      .where({id: req.params.id, userId: req.user.id})
+      .update({ doneDate })
+      .then(() => res.status(204).send('Updated!'))
+      .catch((error) => res.status(500).json(error));
+  }
+
+  const toggleDoneTask = (req, res) => {
+    app.db('tasks')
+      .where({id: req.params.id, userId: req.user.id})
+      .first()
+      .then(task => {
+        if (!task) {
+          const msg = `Id ${req.params.id} não encontrado!`
+          res.status(400).send(msg);
+        }
+
+        const doneDate = task.doneDate ? null : new Date();
+        
+        updateTaskDoneDate(req, res, doneDate);
+      })
+      .catch((error) => res.status(500).json(error));
+  }
+
+
+  return { getTasks, save, remove, toggleDoneTask }
 }
