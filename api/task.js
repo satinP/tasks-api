@@ -14,7 +14,7 @@ module.exports = app => {
   }
 
   const save = (req, res) => {
-    if (!req.body.desc.trim()) {
+    if (!req.body.description.trim()) {
       return res.status(400).send('Não há descricão');
     }
 

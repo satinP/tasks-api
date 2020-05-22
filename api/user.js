@@ -11,7 +11,7 @@ module.exports = app => {
 
  const save = (req, res) => {
 
-  if (!req.body.username || !req.body.email || !req.body.password) {
+  if (!req.body.name || !req.body.email || !req.body.password) {
     return res.status(400).send('Faltam campos');
   }
 
