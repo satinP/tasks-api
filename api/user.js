@@ -20,7 +20,7 @@ module.exports = app => {
 
     app.db('users')
       .insert({name: req.body.name,
-              email: req.body.email,
+              email: req.body.email.toLowercase(),
               password: hashedPassword
             })
     .then(() => {
